@@ -1,0 +1,29 @@
+_section: 文档（测试版） @<about-home> @nav<Documentation>
+
+**NOTE:** This documentation is for the **beta branch** (i.e. ``v6-beta-exports``), which
+is still undergoing minor changes.
+
+你可以通过 npm 安装它：
+
+_code:
+/home/ricmoo> npm install ethers@beta-exports
+
+_null:
+
+请[报告任何 v6 问题](link-issue)，我会立即解决。
+
+如果您正在查看 v5 文档，请参阅 [此处的 v5 文档](link-docs-v5)。
+
+_subsection: Ethers 是什么？
+
+ethers.js 库旨在成为一个完整而紧凑的库，用于与以太坊区块链及其生态系统进行交互。
+
+它通常用于创建去中心化应用程序 (apps)、钱包（例如 [[link-metamask]] 和 [[link-tally]]）以及其他需要读写区块链的工具和简单脚本。
+
+_subsection: 关于本文档
+
+这些文档还在建设中，并且每天都在扩展。
+
+Ethers 的新开发者一定要通读 [[getting-started]] 部分。
+
+了解更多细节可以阅读 [[about-api]] 部分。
