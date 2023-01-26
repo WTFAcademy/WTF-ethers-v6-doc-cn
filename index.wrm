@@ -1,9 +1,10 @@
-_section: 文档（测试版） @<about-home> @nav<Documentation>
+_section: 文档 (BETA) @<about-home> @nav<文档>
 
-**NOTE:** This documentation is for the **beta branch** (i.e. ``v6-beta-exports``), which
-is still undergoing minor changes.
+由 [WTF Academy](https://wtf.academy) 翻译。
 
-你可以通过 npm 安装它：
+**注意：**这份文档是针对 **beta 分支** (即 ``v6-beta-exports``) 的，它仍在进行小范围更改。
+
+你可以通过 `npm` 安装它：
 
 _code:
 /home/ricmoo> npm install ethers@beta-exports
@@ -12,18 +13,20 @@ _null:
 
 请[报告任何 v6 问题](link-issue)，我会立即解决。
 
-如果您正在查看 v5 文档，请参阅 [此处的 v5 文档](link-docs-v5)。
+如果您正在寻找 v5 文档，请在这里查看 [v5 文档](link-docs-v5)。
 
-_subsection: Ethers 是什么？
+_subsection: 什么是 Ethers？
 
-ethers.js 库旨在成为一个完整而紧凑的库，用于与以太坊区块链及其生态系统进行交互。
+ethers.js 库旨在成为一个完整而紧凑的库，用于与 Ethereum 区块链及其生态系统进行交互。
 
-它通常用于创建去中心化应用程序 (apps)、钱包（例如 [[link-metamask]] 和 [[link-tally]]）以及其他需要读写区块链的工具和简单脚本。
+它经常用于创建去中心化应用程序 (dapps)、钱包 (如 [[link-metamask]] 和 [[link-tally]]) 以及其他需要读写区块链的工具和简单脚本。
 
-_subsection: 关于本文档
+_subsection: 关于这份文档
 
-这些文档还在建设中，并且每天都在扩展。
+这些文档仍在建设中，每天都在扩充。
 
-Ethers 的新开发者一定要通读 [[getting-started]] 部分。
+对 Ethers 不熟悉的开发人员应该确保阅读 [[getting-started]] 部分。
 
-了解更多细节可以阅读 [[about-api]] 部分。
+[[about-api]] 可用于深入了解更多细节。
+
+从 v5 迁移请阅读 [[migrating]] 部分。
