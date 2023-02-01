@@ -121,7 +121,6 @@ _heading: 自定义 RPC 后端
   provider = new ethers.JsonRpcProvider(url)
 
   // 通过获取签名作为账户获取写权限。
-
   signer = await provider.getSigner()
 
 
@@ -142,7 +141,7 @@ _heading: 自定义 RPC 后端
   eth = parseEther("1.0")
   //_result:
 
-  // 转换用户提供的gwei为单位的字符串为以wei为单位的max base fee。
+  // 转换用户提供的gwei为单位的字符串为以wei为单位的max base fee
   feePerGas = parseUnits("4.5", "gwei")
   //_result:
 
