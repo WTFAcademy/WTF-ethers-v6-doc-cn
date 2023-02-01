@@ -140,19 +140,19 @@ _heading: 自定义 RPC 后端
 ```  @lang<javascript>
   // 转换用户提供的以ether为单位的字符串为以wei为单位的数量。
   eth = parseEther("1.0")
-  //_result：
+  //_result:
 
   // 转换用户提供的gwei为单位的字符串为以wei为单位的max base fee。
   feePerGas = parseUnits("4.5", "gwei")
-  //_result：
+  //_result:
 
   //将以wei为单位的值转换为以ether为单位字符串，以便UI中显示
   formatEther(eth)
-  //_result：
+  //_result:
 
   //将以wei为单位的值转换为以gwei为单位的字符串，以便UI中显示
   formatUnits(feePerGas, "gwei")
-  //_result：
+  //_result:
 
 
 ## 与区块链交互  @<starting-blockchain>
@@ -166,20 +166,20 @@ _heading: 查询状态
 
   // 查询当前的区块高度
   await provider.getBlockNumber()
-  //_result：
+  //_result:
 
   // 查询帐户的当前余额（通过地址或ENS名称）。
   balance = await provider.getBalance("ethers.eth")
-  //_result：
+  //_result:
 
   // 因为余额是以 wei 为单位的，所以您可能希望将其以
   // 以太 (ether) 的形式显示。
   formatEther(balance)
-  //_result：
+  //_result:
 
   // 获取发送交易所需的下一个 nonce 值
   await provider.getTransactionCount("ethers.eth")
-  //_result：
+  //_result:
 
 _heading: 发送交易
 
