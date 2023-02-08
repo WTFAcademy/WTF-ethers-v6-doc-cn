@@ -190,251 +190,225 @@ _heading: 发送交易
   //_hide: provider.resolveName = () => "0x643aA0A61eADCC9Cc202D1915D942d35D005400C";
   //_hide: signer = new Wallet(id("test"), provider);
 
-  // When sending a transaction, the value is in wei, so parseEther
-  // converts ether to wei.
+  // 当发送交易时，传入的值需要以 wei 为单位，所以要使用 parseEther
+  // 将 ether 转换为 wei
   tx = await signer.sendTransaction({
     to: "ethers.eth",
     value: parseEther("1.0")
   });
   //_result:
 
-  // Often you may wish to wait until the transaction is mined
+  // 你可能常常会希望等候交易打包出块（再继续下一步）
   receipt = await tx.wait();
   //_result:
 
 
-## Contracts  @<starting-contracts>
+## 合约  @<starting-contracts>
 
-A **Contract** is a meta-class, which means that its definition
-its derived at run-time, based on the ABI it is passed, which then
-determined what mehods and properties are available on it.
+**合约**是一种元类，这意味着它的定义是在运行时基于传递的 ABI 派生的，同时决定其可用的方法和属性。
 
-_heading: Application Binary Interface (ABI)
+_heading: 应用程序二进制接口 (ABI)
 
-Since all operations that occur on the blockchain must be encoded
-as binary data, we need a concise way to define how to convert
-between common objects (like strings and numbers) and its binary
-representation, as well as encode the ways to call and interpret
-the Contract.
+由于在区块链上进行的所有操作都必须编码为二进制数据，我们需要一种简洁的方式来定义如何在常见对象（如字符串和数字）与二进制数据之间进行转换，以及合约编码、调用和解释的方式。
 
-For any method, event or error you wish to use, you must include a
-[[Fragment]] to inform Ethers how it should encode the request and
-decode the result.
+对于你想使用的任何方法、事件或错误类型，你必须通过一个 [[Fragment]] 来告知 Ethers 如何对请求进行编码和解码结果。
 
-Any methods or events that are not needed can be safely excluded.
+可以安全地排除任何你不需要的方法或事件。
 
-There are several common formats available to describe an ABI. The
-Solidity compiler usually dumps a JSON representation but when typing
-an ABI by hand it is often easier (and more readable) to use the
-human-readable ABI, which is just the Solidity signautre.
+有几种常见的格式可以描述 ABI，Solidity 编译器通常会转储一个 JSON 格式，但是当手动输入 ABI 时，使用 Solidity 签名这种可读 ABI 格式通常更容易，也具有更强的可读性。
 
-``` simplified ERC-20 ABI @lang<script>
+
+``` 简化版 ERC-20 ABI @lang<script>
   abi = [
     "function decimals() returns (string)",
     "function symbol() returns (string)",
     "function balanceOf(address addr) returns (uint)"
   ]
 
-  // Create a contract
+  // 创建一个合约
   contract = new Contract("dai.tokens.ethers.eth", abi, provider)
 
-_heading: Read-only methods (i.e. ``view`` and ``pure``)
+_heading: 只读方法 (例如 ``view`` 和 ``pure``)
 
-A read-only method is one which cannot change the state of the
-blockchain, but often provide a simple interface to get important
-data about a Contract.
+只读方法是一种不能改变区块链的状态，但通常能够提供一个简单的接口来获取合约重要数据的方法类别
 
-``` reading the DAI ERC-20 contract @lang<javascript>
-  // The contract ABI (fragments we care about)
+``` 阅读 DAI ERC-20 合约 @lang<javascript>
+  // 合约 ABI（我们关心的代码片段）
   abi = [
     "function decimals() view returns (uint8)",
     "function symbol() view returns (string)",
     "function balanceOf(address a) view returns (uint)"
   ]
 
-  // Create a contract; connected to a Provider, so it may
-  // only access read-only methods (like view and pure)
+  // 创建一个合约；连接到一个 Provider，它只能
+  // 访问只读的方法（如 view 和 pure）
   contract = new Contract("dai.tokens.ethers.eth", abi, provider)
 
-  // The symbol name for the token
+  // Token 的符号
   sym = await contract.symbol()
   //_result:
 
-  // The number of decimals the token uses
+  // Token 的精度
   decimals = await contract.decimals()
   //_result:
 
-  // Read the token balance for an account
+  // 读取特定账户的 Token 余额
   balance = await contract.balanceOf("ethers.eth")
   //_result:
 
-  // Format the balance for humans, such as in a UI
+  // 对余额进行格式化，例如用于用户界面中
   formatUnits(balance, decimals)
   //_result:
 
-_heading: State-changing Methods
+_heading: 能改变状态的方法
 
-``` change state on an ERC-20 contract  @lang<script>
+``` 改变一个 ERC-20 合约的状态  @lang<script>
 
   abi = [
     "function transfer(address to, uint amount)"
   ]
 
-  // Connected to a Signer; can make state changing transactions,
-  // which will cost the account ether
+  // 连接到一个 Signer；触发改变状态的交易
+  // 这将花费账户的以太币
   contract = new Contract("dai.tokens.ethers.eth", abi, signer)
 
-  // Send 1 DAI
+  // 发送 1 DAI
   amount = parseUnits("1.0", 18);
 
-  // Send the transaction
+  // 发送交易
   tx = await contract.transfer("ethers.eth", amount)
   //_result: @TODO
 
-  // Currently the transaction has been sent to the mempool,
-  // but has not yet been included. So, we...
+  // 目前，交易被发送至内存池了
+  // 但其尚未被区块所打包。所以，我们...
 
-  // ...wait for the transaction to be included.
+  // ...等待交易被打包
   await tx.wait()
   //_result: @TODO
 
-``` forcing a call (simulation) of a state-changing method @lang<javascript>
+``` 强制调用（模拟）一个会改变状态的方法 @lang<javascript>
 
   abi = [
     "function transfer(address to, uint amount) returns (bool)"
   ]
 
-  // Connected to a Provider since we only require read access
+  // 连接到 Provider，因为我们只需要读取权限
   contract = new Contract("dai.tokens.ethers.eth", abi, provider)
 
   amount = parseUnits("1.0", 18)
 
-  // There are many limitations to using a static call, but can
-  // often be useful to preflight a transaction.
+  // 使用静态调用有很多限制，但
+  // 对于预执行交易这种场景往往很实用
   await contract.transfer.staticCall("ethers.eth", amount)
   //_result:
 
-  // We can also simulate the transaction as another account
+  // 我们也可以模拟另一个账户发起调用
   other = new VoidSigner("0x643aA0A61eADCC9Cc202D1915D942d35D005400C")
   contractAsOther = contract.connect(other.connect(provider))
   await contractAsOther.transfer.staticCall("ethers.eth", amount)
   //_result:
 
-_heading: Listening to Events
+_heading: 事件监听
 
-When adding event listeners for a named event, the event parameters
-are destructed for the listener.
+当为一个已定义的事件添加监听器时，事件参数会被监听器解构。
 
-There is always one additional parameter passed to a listener, which
-is an [[EventPayload]], which includes more information about the event
-including the filter and a method to remove that listener.
+总是会传递一个额外的参数给监听器，它是一个[[EventPayload]]，其中包含了事件的更多信息，比如过滤器与删除该监听器的方法。
 
-``` listen for ERC-20 events  @lang<script>
+``` 监听 ERC-20 合约事件  @lang<script>
   abi = [
     "event Transfer(address indexed from, address indexed to, uint amount)"
   ]
 
-  // Create a contract; connected to a Provider, so it may
-  // only access read-only methods (like view and pure)
+  // 创建一个合约；连接到一个 Provider，它只能
+  // 访问只读的方法（如 view 和 pure）
   contract = new Contract("dai.tokens.ethers.eth", abi, provider)
 
-  // Begin listening for any Transfer event
+  // 开始监听任何转账事件
   contract.on("Transfer", (from, to, _amount, event) => {
     const amount = formatEther(_amount, 18)
     console.log(`${ from } => ${ to }: ${ amount }`);
 
-    // The `event.log` has the entire EventLog
+    // `event.log` 包含了完整的事件日志
 
-    // Optionally, convenience method to stop listening
+    // （可选）便捷的停止监听的方法
     event.removeListener();
   });
 
-  // Same as above
+  // 同上
   contract.on(contract.filters.Transfer, (from, to, amount, event) => {
-    // See above
+    // 见上文
   })
 
-  // Listen for any Transfer to "ethers.eth"
+  // 监听任何 "ethers.eth" 的转账事件
   filter = contract.filters.Transfer("ethers.eth")
   contract.on(filter, (from, to, amount, event) => {
     // `to` will always be equal to the address of "ethers.eth"
   });
 
-  // Listen for any event, whether it is present in the ABI
-  // or not. Since unknown events can be picked up, the
-  // parameters are not destructed.
+  // 监听任何事件，不论其是否在 ABI 中有定义
+  // 未知事件也可以被监听器获取
+  // 但参数无法被解构
   contract.on("*", (event) => {
-    // The `event.log` has the entire EventLog
+    // `event.log` 包含了完整的事件日志
   });
 
 
 
-_heading: Query Historic Events
+_heading: 查询历史事件
 
-When querying within a large range of blocks, some backends may
-be prohibitively slow, may return an error or may truncate the
-results without any indication. This is at the discretion of each
-backend.
+当在一个较大的区块范围内进行查询时，某些后台可能会运行过慢，也可能会返回一个错误或截断结果而没有任何提示，这取决于不同后台实现。
 
 ``` query historic ERC-20 events  @lang<javascript>
   abi = [
     "event Transfer(address indexed from, address indexed to, uint amount)"
   ]
 
-  // Create a contract; connected to a Provider, so it may
-  // only access read-only methods (like view and pure)
+  // 创建一个合约；连接到一个 Provider，它只能
+  // 访问只读的方法（如 view 和 pure）
   contract = new Contract("dai.tokens.ethers.eth", abi, provider)
 
-  // Query the last 100 blocks for any transfer
+  // 查询最近 100 个区块的任何转账事件
   filter = contract.filters.Transfer
   events = await contract.queryFilter(filter, -100)
 
-  // The events are a normal Array
+  // 这些事件是一个正常的数组
   events.length
   //_result:
 
-  // The first matching event
+  // 第一个符合条件的事件
   events[0]
   //_result:
 
-  // Query all time for any transfer to ethers.eth
+  // 查询目标为 ethers.eth 的所有转账事件
   filter = contract.filters.Transfer("ethers.eth")
   events = await contract.queryFilter(filter)
 
-  // The first matching event
+  // 第一个符合条件的事件
   events[0]
   //_result:
 
 
-## Signing Messages  @<starting-signing>
+## 消息签名 @<starting-signing>
 
-A private key can do a lot more than just sign a transaction to authorize
-it. It can also be used to sign other forms of data, which are then able
-to be validated for other purposes.
+私钥除了用于交易签名授权外，还可以做很多事情。它还可以对其他形式的数据进行签名，用于其他验证目的。
 
-For example, signing **a message** can be used to prove ownership of an
-account which a website could use to authenicate a user and log them in.
+例如，对**消息**进行签名可以用来证明一个账户的所有权，网站可以用它来对用户进行登录鉴权。
 
 ```  @lang<javascript>
 
-  // Our signer; Signing messages does not require a Provider
+  // Signer；对消息进行签名不需要 Provider
   signer = new Wallet(id("test"))
   //_result:
 
   message = "sign into ethers.org?"
 
-  // Signing the message
+  // 对消息进行签名
   sig = await signer.signMessage(message);
   //_result:
 
-  // Validating a message; notice the address matches the signer
+  // 验证消息；会发现地址与 Signer 相符
   verifyMessage(message, sig)
   //_result:
 
 
-
-Many other more advanced protocols built on top of signed messages are
-used to allow a private key to authorize other users to transfer their
-tokens, allowing the transaction fees of the transfer to be paid by
-someone else.
-
+许多其他更高级的基于消息签名的协议被用来允许通过私钥授权其他用户转移他们的 Token，并允许转账手续费由其他人支付。
