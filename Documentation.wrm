@@ -1,22 +1,21 @@
-# 文档（测试版） @priority<100>
+_section: 文档（测试版） @priority<100>
 
 **注意**：本文档适用于**测试分支**（即v6-beta-exports），该分支仍在进行细微修改。
 
 试试看：
-```@lang<shell>
+_code:
 /home/ricmoo> npm install ethers@beta-exports
-```
 
 请报告任何v6问题，可以[联系文档官方github](https://github.com/ethers-io/ethers.js/issues/new/choose)进行处理。
 如果您正在查看v5文档，请在此处查看[v5文档](https://docs.ethers.org/v5/)。
 
-## 什么是Ethers？
+_subsection: 什么是Ethers？
 
 ethers.js库旨在成为一个完整而紧凑的库，服务于与以太坊区块链及其生态系统进行互相交互。
 它通常用于创建去中心化应用程序 (dapps)、钱包（例如[MetaMask](https://metamask.io/)和[Tally](https://tallyho.org/)）和其他需要读写区块链的工具和简单脚本。
 
 
-## 关于这份文档
+_subsection: 关于这份文档
 
 本文为[官方文档v6版本](https://docs.ethers.org/v6-beta/)的中文翻译版，原文档仍在持续建设中，并且每天都在扩展。
 新接触Ethers的开发人员应该确保通读[入门](https://docs.ethers.org/v6-beta/getting-started/)部分。
