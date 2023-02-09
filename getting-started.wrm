@@ -1,125 +1,88 @@
-# Getting Started @<getting-started> @priority<100>
+# 入门指南@<新手入门> @priority<100>
 
-This is a very short introduction to Ethers, but covers many of the
-most common operations that developers require and provides a
-starting point for those newer to Ethereum.
+这是一份关于 Ethers 的简短介绍，但涵盖了许多开发人员需要的常见操作，并为 Ethereum 新手提供了一个入门指南。
 
 
-_heading: Getting Ethers
+_heading: 安装 Ethers
 
-If using NPM, you must first install Ethers.
+如果使用 NPM，您必须首先安装 Ethers。
 
-``` installing via NPM @lang<shell>
-  # Install ethers
+``` 通过 NPM 安装 @lang<shell>
+  # 安装 ethers
   /home/ricmoo/test-ethers> npm install ethers@beta-exports
 
 
 
-Everything in Ethers is exported from its root as well as on the ``ethers``
-object. There are also ``exports`` in the ``package.json`` to facilitate
-more fine-grained importing.
+在 Ethers 中的所有内容都从根目录导出，并在``ethers``对象上导出。在``package.json``中也有``exports``，以方便更细粒度的导入。
 
-Generally this documentation will presume all exports from ethers
-have been imported in the code examples, but you may import the
-necessary objects any way you wish.
+通常情况下，本文档假定在代码示例中已经导入了来自 ethers 的所有导出项，但您可以以任意方式导入必要的对象。
 
-``` importing in Node.js  @lang<script>
-  // Import everything
+``` 在 Node.js 中导入 @lang<script>
+  // 导入所有
   import { ethers } from "ethers";
 
-  // Import just a few select items
+  // 只导入一些选定的项目
   import { BrowserProvider, parseUnits } from "ethers";
 
-  // Import from a specific export
+  // 从特定的导出项导入
   import { HDNodeWallet } from "ethers/wallet";
 
-``` importing ESM in a browser  @lang<script>
+``` 从浏览器中导入 ESM  @lang<script>
   <script type="module">
     import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.min.js";
-    // Your code here...
+    // 在这里继续写代码...
   </script>
 
 
-## Some Common Terminology  @<starting-glossary>
+## 常见术语  @<starting-glossary>
 
-To begin, it is useful to have a basic understanding of the types of
-objects available and what they are responsible for, at a high level.
+开始前，有必要在抽象层面上了解可用的对象类型以及它们的含义。
 
 _heading: Provider
 
-A [[Provider]] is a read-only connection to the blockchain, which allows
-querying the blockchain state, such as accout, block or transaction details,
-querying event logs or evaluating read-only code using call.
+[[Provider]] 是对区块链的只读连接，允许查询区块链状态，例如账户、区块或交易详情、查询事件日志或使用 call 评估只读代码。
 
-If you are coming from Web3.js, you are used to a **Provider** offering
-both read and write access. In Ethers, all write operations are further
-abstracted into another Object, the **Signer**.
+如果您之前学习过 Web3.js，已经习惯于 **Provider** 提供读写访问。在 Ethers 中，所有写操作都被进一步抽象成另一个对象： **Signer** 。
 
 _heading: Signer
 
-A [[Signer]] wraps all operations that interact with an account. An
-account generally has a private key located //somewhere//, which can be
-used to sign a variety of types of payloads.
+[[Signer]] 包装了与账户交互的所有操作。通常，账户具有位于//某处//的私钥，可用于对各种类型的载荷进行签名。
 
-The private key may be located in memory (using a [[Wallet]]) or
-protected via some IPC layer, such as MetaMask which proxies interaction
-from a website to a browser plug-in, which keeps the private key out of
-the reach of the website and only permits interaction after requesting
-permission from the user and receiving authorization.
+私钥可以位于内存中（使用 [[Wallet]] 时），或通过某些 IPC 层保护，例如 MetaMask，它代理来自网站的交互到浏览器插件，使私钥不受网站影响，并且仅在请求用户的许可并收到授权后才允许交互。
 
 _heading: Transaction
 
-To make any state changes to the blockchain, a transaction is required,
-which requires a fee be paid, where the fee covers the associated costs
-with executing the transaction (such as reading the disk and performing
-maths) and storing the updated information.
+若要对区块链进行任何状态更改，需进行一笔交易，其中需要支付费用，费用涵盖执行交易（如读取磁盘和执行数学运算）和存储更新信息的相关费用。
 
-If a transaction reverts, a fee must still be paid, since the validator
-still had to expend resources to try running the transaction to determine
-that it reverted and the details of its failure are still be recorded.
+如果交易回滚，仍然必须支付费用，因为验证器仍然必须花费资源尝试运行交易以确定它已回滚，并记录其失败的详细信息。
 
-Transactions include sending ether from one user to another, deploying
-a **Contract** or executing a state-changing operation against a
-**Contract**.
+交易包括从一个用户向另一个用户发送以太币，部署 **Contract** 或对 **Contract** 执行更改状态的操作。
 
 _heading: Contract
 
-A [[Contract]] is a program that has been deployed to the blockchain,
-which includes some code and has allocated storage which it can read
-from and write to.
+[[Contract]] 是已部署到区块链上的程序，其包含一些代码并已分配存储空间，可以对其进行读取和写入。
 
-It may be read from when it is connected to a [[Provider]] or
-state-changing operations can be called when connected to a [[Signer]].
+当连接到 [[Provider]] 时可以读取它，当连接到 [[Signer]] 时可以调用更改状态的操作。
 
 _heading: Receipt
 
-Once a **Transaction** has been submitted to the blockchain, it is placed
-in the memory pool (mempool) until a validator decides to include it.
+一旦 **Trnsaction** 已提交到区块链，它将被放入内存池（mempool），直到验证器将其打包上链。
 
-A transaction's changes are only made once it has been included in the
-blockchain, at which time a receipt is available, which includes details
-about the transaction, such as which block it was included in, the actual
-fee paid, gas used, all the events that it emitted and whether it was
-successful or reverted.
+交易上链时，交易的更改生效，此时可以获得一份收据，其中包括关于交易的详细信息，例如它被包含在哪个区块中，实际支付的费用，使用的 gas ，它发出的所有事件以及它是否成功或回滚。
 
 
-## Connecting to Ethereum  @<starting-connecting>
+## 连接到 Ethereum  @<starting-connecting>
 
-This very first thing needed to begin interacting with the blockchain is
-connecting to it using a [[Provider]].
+与区块链进行交互所需的第一件事就是使用 [[Provider]] 连接到它。
 
-_heading: MetaMask (and other injected providers)
+_heading: MetaMask (和其他内置的服务提供商)
 
-The quickest and easiest way to experiment and begin developing
-on Ethereum is to use [[link-metamask]], which is a browser
-extension that injects objects into the ``window``, providing:
+最快、最简洁的尝试和开发以太坊的方法是使用 [[link-metamask]]，它是一个浏览器扩展，将对象注入 window，提供：
 
-- read-only access to the Ethereum network (a [[Provider]])
-- authenticated write access backed by a private key (a [[Signer]])
+- 对以太坊网络的只读访问（[[Provider]]）
+- 由私钥支持的基于请求许可的写访问（[[Signer]]）
 
-When requesting access to the authenticated methods, such as
-sending a transaction or even requesting the private key addess,
-MetaMask will show a pop-up to the user asking for permission.
+当请求访问身份验证方法（如发送交易或请求私钥地址）时，MetaMask会向用户显示一个弹出窗口，请求许可。
 
 ```  @lang<script>
   let signer = null;
@@ -127,127 +90,99 @@ MetaMask will show a pop-up to the user asking for permission.
   let provider;
   if (window.ethereum == null) {
 
-      // If MetaMask is not installed, we use the default provider,
-      // which is backed by a variety of third-party services (such
-      // as INFURA). They do not have private keys installed so are
-      // only have read-only access
+      //如果未安装 MetaMask，我们使用默认提供者
+      //它由各种第三方服务（例如 INFURA ）支持。
+      //它们没有安装私钥，因此只具有只读访问权限。
       console.log("MetaMask not installed; using read-only defaults")
       provider = ethers.getDefaultProvider()
 
   } else {
 
-      // Connect to the MetaMask EIP-1193 object. This is a standard
-      // protocol that allows Ethers access to make all read-only
-      // requests through MetaMask.
+      // 连接到 MetaMask EIP-1193 对象。这是一个标准协议，允许 Ethers 访问通过 MetaMask 进行所有只读请求。
       provider = new ethers.BrowserProvider(window.ethereum)
 
-      // It also provides an opportunity to request access to write
-      // operations, which will be performed by the private key
-      // that MetaMask manages for the user.
+      // 还提供了请求访问写操作的可能，
+      // 这些操作将由 MetaMask 为用户管理的私钥执行。
       signer = await provider.getSigner();
   }
 
 
-_heading: Custom RPC Backend
+_heading: 自定义 RPC 后端
 
-If you are running your own Ethereum node (e.g. [[link-geth]])
-or using a custom third-party service (e.g. [[link-infura]]),
-you can use the [[JsonRpcProvider]] directly, which communicates
-using the [[link-jsonrpc]] protocol.
+如果您正在运行自己的以太坊节点（例如 [[link-geth]] ）或使用自定义的第三方服务（例如 [[link-infura]] ），您可以直接使用 [[JsonRpcProvider]] ，该对象使用[[link-jsonrpc]]协议进行通信。
 
-When using your own Ethereum node or a developer-base blockchain,
-such as Hardhat or Ganache, you can get access the accounts with
-[[JsonRpcProvider-getSigner]].
+如果使用自己的以太坊节点或基于开发人员的区块链，例如 Hardhat 或 Ganache，您可以使用 [[JsonRpcProvider-getSigner]] 获取帐户。
 
-``` connecting to a JSON-RPC URL  @lang<script>
+``` 连接到一个 JSON-RPC URL  @lang<script>
 
   // If no %%url%% is provided, it connects to the default
   // http://localhost:8545, which most nodes use.
+  // 如果未提供 %%url%% ，它将连接到默认的http://localhost:8545，这是大多数节点所使用的。
   provider = new ethers.JsonRpcProvider(url)
 
-  // Get write access as an account by getting the signer
+  // 通过获取签名作为账户获取写权限。
   signer = await provider.getSigner()
 
 
-## User Interaction  @<starting-display>
+## 用户交互  @<starting-display>
 
-All units in Ethereum tend to be integer values, since dealing with
-decimals and floating points can lead to inprecise and non-obvious
-results when performing mathematic operations.
+在 Ethereum 中，所有单位通常都是整数值，因为处理小数和浮点数可能导致在执行数学运算时不精确和不显然的结果。
 
-As a result, the internal units used (e.g. wei) which are suited for
-machine-readable purposes and maths are often very large and not
-terribly human-readable.
+因此，在以太坊内部使用的单位（例如wei）适用于机器可读的目的和数学计算，通常非常大且可读性较差。
 
-For example, imagine dealing with dollars and cents; you would show
-values like ``"$2.56"``. In the blockchain world we would keep all
-values as cents, so that would be ``256`` cents, internally.
+例如，想象处理元和分；您将显示像``“2.56元”``的值。在区块链世界中，我们将所有值保留为分，因此在程序内部将保存为``256``分。
 
-So, when accepting data that a user types, it must be converted from
-its decimal string representation (e.g. ``"2.56"``) to its lowest-unit
-integer representation (e.g. ``256``). And when displaying a value to
-a user the opposite operation is necessary.
+因此，当接受用户输入的数据时，必须将其从小数字符串表示（例如``"2.56"``）转换为最低单位整数表示（例如``256``）。当向用户显示值时，需要进行相反的操作。
 
-In Ethereum, //one ether// is equal to ``10 *\* 18`` wei and //one gwei//
-is equal to ``10 *\* 9`` wei, so the values get very large very quickly,
-so some convenience functions are provided to help convert between
-representations.
+在以太坊中，//一个ether//等于``10 *\* 18``个wei，一个gwei等于``10 *\* 9``个wei，所以数值很快就会变得很大，因此提供了一些方便的函数来帮助在表示这之间转换。
 
 ```  @lang<javascript>
-  // Convert user-provided strings in ether to wei for a value
+  // 转换用户提供的以ether为单位的字符串为以wei为单位的数量。
   eth = parseEther("1.0")
   //_result:
 
-  // Convert user-provided strings in gwei to wei for max base fee
+  // 转换用户提供的gwei为单位的字符串为以wei为单位的max base fee
   feePerGas = parseUnits("4.5", "gwei")
   //_result:
 
-  // Convert a value in wei to a string in ether to display in a UI
+  //将以wei为单位的值转换为以ether为单位字符串，以便UI中显示
   formatEther(eth)
   //_result:
 
-  // Convert a value in wei to a string in gwei to display in a UI
+  //将以wei为单位的值转换为以gwei为单位的字符串，以便UI中显示
   formatUnits(feePerGas, "gwei")
   //_result:
 
 
-## Interacting with the Blockchain  @<starting-blockchain>
+## 与区块链交互  @<starting-blockchain>
 
-_heading: Querying State
+_heading: 查询状态
 
-Once you have a [[Provider]], you have a read-only connection to
-the data on the blockchain. This can be used to query the current
-account state, fetch historic logs, look up contract code and so on.
+有了 [[Provider]] ，就可以对区块链上的数据进行只读连接。这可以用来查询当前账户状态，获取历史日志，查找合约代码等。
 
 ```  @lang<javascript>
   //_hide: provider = new InfuraProvider();
 
-  // Look up the current block number (i.e. height)
+  // 查询当前的区块高度
   await provider.getBlockNumber()
   //_result:
 
-  // Get the current balance of an account (by address or ENS name)
+  // 查询帐户的当前余额（通过地址或ENS名称）。
   balance = await provider.getBalance("ethers.eth")
   //_result:
 
-  // Since the balance is in wei, you may wish to display it
-  // in ether instead.
+  // 因为余额是以 wei 为单位的，所以您可能希望将其以
+  // 以太 (ether) 的形式显示。
   formatEther(balance)
   //_result:
 
-  // Get the next nonce required to send a transaction
+  // 获取发送交易所需的下一个 nonce 值
   await provider.getTransactionCount("ethers.eth")
   //_result:
 
-_heading: Sending Transactions
+_heading: 发送交易
 
-To write to the blockchain you require access to a private key
-which controls some account. In most cases, those private keys
-are not accessible directly to your code, and instead you make
-requests via a [[Signer]], which dispatches the request to a
-service (such as [[link-metamask]]) which provides strictly
-gated access and requires feedback to the user to approve or
-reject operations.
+要写入区块链，您需要访问控制某个帐户的私钥。在大多数情况下，代码不能直接访问这些私钥，而是通过 [[Signer]] 发出请求，该 Signer 将请求分派给提供严格的门户访问的服务（如 [[link-metamask]] ），并要求用户批准或拒绝操作。
 
 ```  @lang<script>
 
