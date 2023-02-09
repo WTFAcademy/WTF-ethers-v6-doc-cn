@@ -1,84 +1,63 @@
-# Contributings and Hacking @<about-contrib> @priority<-90>
+# 贡献和处理 @<关于-贡献> @priority<-90>
 
-Pull requests are welcome, but please keep the following in mind:
+欢迎提交 PR ，但请注意以下事项：
 
-- Backwards-compatibility-breaking changes will not be accepted;
-  they may be considered for the next major version
-- Security is important; adding dependencies require fairly
-  convincing arguments as to why
-- The library aims to be lean, so keep an eye on the
-  ``dist/ethers.min.js`` file size before and after your
-  changes (the ``build-clean`` target includes these stats)
-- Keep the PR simple, readable and confined to the relevant
-  files; see below for which files to change
-- Add test cases for both expected and unexpected input
-- Any new features need to be supported by me (future issues,
-  documentation, testing, migration), so anything that is
-  overly complicated or specific may not be accepted
-- Everyone is working hard; **be kind and respectful**
+- 不接受向后兼容性更改的更改；它们可能会被考虑在下一个主要版本中使用
+- 安全性很重要；添加依赖需要相当有说服力的论据
+- 该库旨在精简，因此请在你更改前后关注``dist/ethers.min.js``文件大小（``build-clean``目标包括这些统计信息）
+- 保持 PR 的简单、可读性，并将其限制在相关的文件；关于要修改的文件见下文
+- 为预期和意外的输入添加测试案例
+- 任何新功能都需要得到我的支持（未来的问题、文档、测试、迁移），因此任何过于复杂或特定的内容可能不会被接受
+- 每个人都在努力工作；**请保持友好和尊重**
 
-It is always //highly recommended// that you open a [[link-discussion]]
-**before** beginning a PR.
+//强烈建议//你在开始 PR **之前**先开启一个[[link-discussion]]
 
 
-## Documentation  @<about-contrib-docs>
+## 文档  @<关于-贡献-文档>
 
-The documentation is an area which can always benefit from extra
-eyes, extra knowledge and extra examples.
+文档是一个始终可以从额外的视角，额外的知识和额外的示例中受益的地方
 
-Contributing to the documentation is welcome
+对文档的贡献是受欢迎的
 
-When making changes to documentation, please ensure that all
-changes are made **only** to:
+在对文档进行更改时，请确保所有更改**仅限**于
 
-- Updating ``/docs.wrm/*\*.wrm``
-- Adding links: ``/docs.wrm/links/*.txt``
-- Updating API jsdocs: ``/*\* ... */`` comment blocks within ``/src.ts/``
+- 更新``/docs.wrm/*\*.wrm``
+- 添加链接: ``/docs.wrm/links/*.txt``
+- 更新 API jsdocs：在 ``/src.ts/`` 中的 ``/*\* ... */`` 注释块
 
-Generally changes to ``/docs.wrm/config.wrm`` should not be
-made, and if you feel it is necessary, please consider opening
-a [[link-discussion]] first.
+通常不应对 ``/docs.wrm/config.wrm`` 进行更改，如果你认为有必要，请考虑先开启一个[[link-discussion]]。
 
-Similarly, when adding a new sections, a [[link-discussion]] is
-preferred.
+同样，在添加新章节时，更倾向于先开启一个[[link-discussion]]
 
-All changes should be in the Flatworm Markdown Dialect.
+所有更改都应该使用 Flatworm Markdown Dialect
 
 
-## Fixing Bugs  @<about-contrib-bugs>
+## 修改漏洞  @<关于-贡献-漏洞>
 
-In general the **only** files you should ever include in a PR are:
+一般来说，您在 PR 中**唯一**应该包含的文件是：
 
-- TypeScript source: ``/src.ts/*\*.ts``
+- TypeScript 源码: ``/src.ts/*\*.ts``
 
-Do not include a ``package.json`` with the updated ``tarballHash``
-or ``version``, and do not include any generated files in your PR.
+不要包含带有更新``tarballHash``或``version``的``package.json``，也不要在 PR 中包含任何生成的文件。
 
-A bug fix **must not** modify anything requiring a minor version
-bump (see [[about-contrib-feature]]), such as changing a method
-signature or altering the exports.
+漏洞修复**不能**修改任何需要一个次版本升级的内容（详见[[关于-贡献-功能]]），例如更改方法签名或更改导出
 
 
-## Adding Features  @<about-contrib-feature>
+## 增加功能  @<关于-贡献-功能>
 
-Contributing new features usually require a deeper understanding
-of the internal interactions with Ethers and its components, and
-generally requires a minor version bumpincludes anything w
+贡献新功能通常需要对Ethers及其组件内部交互更深入的理解，并且通常需要一个包含了所有内容的次版本升级
 
-When making any of the following changes, you must first open a
-[[link-discussion]] as the minor version will need to be bumped.
+在进行以下任何更改时，您必须首先开启一个[[link-discussion]]，因为需要升级次版本
 
-- any signature change (such as adding a parameter, changing a
-  parameter type, changing the return type)
-- adding any new export; such as a class, function or constants
-- adding any method to any class
-- changing any ``exports`` property within the ``package.json``
+- 任何签名更改（例如添加参数，更改参数类型，更改返回类型）
+- 添加任何新的导出；例如类，函数或常量
+- 向任何类添加任何方法
+- 更改 ``package.json`` 中的任何 ``exports`` 属性
 
-Changes of this sort should not be made without serious consideration
-and discussion.
+这种类型的更改应该在经过认真考虑和讨论之后才进行
 
 
-## Building  @<building>
+## 搭建  @<搭建>
 
 ``` @lang<shell>
   /home/ricmoo> git clone @TODO
@@ -89,5 +68,4 @@ and discussion.
 
 
 
-## Previewing Documentation
-
+## 预览文档
