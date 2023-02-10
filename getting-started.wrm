@@ -1,4 +1,4 @@
-# 入门指南@<新手入门> @priority<100>
+_section: 入门指南@<新手入门> @priority<100>
 
 这是一份关于 Ethers 的简短介绍，但涵盖了许多开发人员需要的常见操作，并为 Ethereum 新手提供了一个入门指南。
 
@@ -7,7 +7,7 @@ _heading: 安装 Ethers
 
 如果使用 NPM，您必须首先安装 Ethers。
 
-``` 通过 NPM 安装 @lang<shell>
+_code: 通过 NPM 安装 @lang<shell>
   # 安装 ethers
   /home/ricmoo/test-ethers> npm install ethers@beta-exports
 
@@ -17,7 +17,7 @@ _heading: 安装 Ethers
 
 通常情况下，本文档假定在代码示例中已经导入了来自 ethers 的所有导出项，但您可以以任意方式导入必要的对象。
 
-``` 在 Node.js 中导入 @lang<script>
+_code: 在 Node.js 中导入 @lang<script>
   // 导入所有
   import { ethers } from "ethers";
 
@@ -27,14 +27,14 @@ _heading: 安装 Ethers
   // 从特定的导出项导入
   import { HDNodeWallet } from "ethers/wallet";
 
-``` 从浏览器中导入 ESM  @lang<script>
+_code: 从浏览器中导入 ESM  @lang<script>
   <script type="module">
     import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.min.js";
     // 在这里继续写代码...
   </script>
 
 
-## 常见术语  @<starting-glossary>
+_subsection: 常见术语  @<starting-glossary>
 
 开始前，有必要在抽象层面上了解可用的对象类型以及它们的含义。
 
@@ -71,7 +71,7 @@ _heading: Receipt
 交易上链时，交易的更改生效，此时可以获得一份收据，其中包括关于交易的详细信息，例如它被包含在哪个区块中，实际支付的费用，使用的 gas ，它发出的所有事件以及它是否成功或回滚。
 
 
-## 连接到 Ethereum  @<starting-connecting>
+_subsection: 连接到 Ethereum  @<starting-connecting>
 
 与区块链进行交互所需的第一件事就是使用 [[Provider]] 连接到它。
 
@@ -84,7 +84,7 @@ _heading: MetaMask (和其他内置的服务提供商)
 
 当请求访问身份验证方法（如发送交易或请求私钥地址）时，MetaMask会向用户显示一个弹出窗口，请求许可。
 
-```  @lang<script>
+_code:  @lang<script>
   let signer = null;
 
   let provider;
@@ -113,7 +113,7 @@ _heading: 自定义 RPC 后端
 
 如果使用自己的以太坊节点或基于开发人员的区块链，例如 Hardhat 或 Ganache，您可以使用 [[JsonRpcProvider-getSigner]] 获取帐户。
 
-``` 连接到一个 JSON-RPC URL  @lang<script>
+_code: 连接到一个 JSON-RPC URL  @lang<script>
 
   // If no %%url%% is provided, it connects to the default
   // http://localhost:8545, which most nodes use.
@@ -124,7 +124,7 @@ _heading: 自定义 RPC 后端
   signer = await provider.getSigner()
 
 
-## 用户交互  @<starting-display>
+_subsection: 用户交互  @<starting-display>
 
 在 Ethereum 中，所有单位通常都是整数值，因为处理小数和浮点数可能导致在执行数学运算时不精确和不显然的结果。
 
@@ -136,7 +136,7 @@ _heading: 自定义 RPC 后端
 
 在以太坊中，//一个ether//等于``10 *\* 18``个wei，一个gwei等于``10 *\* 9``个wei，所以数值很快就会变得很大，因此提供了一些方便的函数来帮助在表示这之间转换。
 
-```  @lang<javascript>
+_code:  @lang<javascript>
   // 转换用户提供的以ether为单位的字符串为以wei为单位的数量。
   eth = parseEther("1.0")
   //_result:
@@ -154,13 +154,13 @@ _heading: 自定义 RPC 后端
   //_result:
 
 
-## 与区块链交互  @<starting-blockchain>
+_subsection: 与区块链交互  @<starting-blockchain>
 
 _heading: 查询状态
 
 有了 [[Provider]] ，就可以对区块链上的数据进行只读连接。这可以用来查询当前账户状态，获取历史日志，查找合约代码等。
 
-```  @lang<javascript>
+_code:  @lang<javascript>
   //_hide: provider = new InfuraProvider();
 
   // 查询当前的区块高度
@@ -184,7 +184,7 @@ _heading: 发送交易
 
 要写入区块链，您需要访问控制某个帐户的私钥。在大多数情况下，代码不能直接访问这些私钥，而是通过 [[Signer]] 发出请求，该 Signer 将请求分派给提供严格的门户访问的服务（如 [[link-metamask]] ），并要求用户批准或拒绝操作。
 
-```  @lang<script>
+_code:  @lang<script>
 
   //_hide: provider = new JsonRpcProvider("http:/\/localhost:8545")
   //_hide: provider.resolveName = () => "0x643aA0A61eADCC9Cc202D1915D942d35D005400C";
@@ -203,7 +203,7 @@ _heading: 发送交易
   //_result:
 
 
-## 合约  @<starting-contracts>
+_subsection: 合约  @<starting-contracts>
 
 **合约**是一种元类，这意味着它的定义是在运行时基于传递的 ABI 派生的，同时决定其可用的方法和属性。
 
@@ -218,7 +218,7 @@ _heading: 应用程序二进制接口 (ABI)
 有几种常见的格式可以描述 ABI，Solidity 编译器通常会转储一个 JSON 格式，但是当手动输入 ABI 时，使用 Solidity 签名这种可读 ABI 格式通常更容易，也具有更强的可读性。
 
 
-``` 简化版 ERC-20 ABI @lang<script>
+_code: 简化版 ERC-20 ABI @lang<script>
   abi = [
     "function decimals() returns (string)",
     "function symbol() returns (string)",
@@ -232,7 +232,7 @@ _heading: 只读方法 (例如 ``view`` 和 ``pure``)
 
 只读方法是一种不能改变区块链的状态，但通常能够提供一个简单的接口来获取合约重要数据的方法类别
 
-``` 阅读 DAI ERC-20 合约 @lang<javascript>
+_code: 阅读 DAI ERC-20 合约 @lang<javascript>
   // 合约 ABI（我们关心的代码片段）
   abi = [
     "function decimals() view returns (uint8)",
@@ -262,7 +262,7 @@ _heading: 只读方法 (例如 ``view`` 和 ``pure``)
 
 _heading: 能改变状态的方法
 
-``` 改变一个 ERC-20 合约的状态  @lang<script>
+_code: 改变一个 ERC-20 合约的状态  @lang<script>
 
   abi = [
     "function transfer(address to, uint amount)"
@@ -286,7 +286,7 @@ _heading: 能改变状态的方法
   await tx.wait()
   //_result: @TODO
 
-``` 强制调用（模拟）一个会改变状态的方法 @lang<javascript>
+_code: 强制调用（模拟）一个会改变状态的方法 @lang<javascript>
 
   abi = [
     "function transfer(address to, uint amount) returns (bool)"
@@ -314,7 +314,7 @@ _heading: 事件监听
 
 总是会传递一个额外的参数给监听器，它是一个[[EventPayload]]，其中包含了事件的更多信息，比如过滤器与删除该监听器的方法。
 
-``` 监听 ERC-20 合约事件  @lang<script>
+_code: 监听 ERC-20 合约事件  @lang<script>
   abi = [
     "event Transfer(address indexed from, address indexed to, uint amount)"
   ]
@@ -358,7 +358,7 @@ _heading: 查询历史事件
 
 当在一个较大的区块范围内进行查询时，某些后台可能会运行过慢，也可能会返回一个错误或截断结果而没有任何提示，这取决于不同后台实现。
 
-``` query historic ERC-20 events  @lang<javascript>
+_code: query historic ERC-20 events  @lang<javascript>
   abi = [
     "event Transfer(address indexed from, address indexed to, uint amount)"
   ]
@@ -388,13 +388,13 @@ _heading: 查询历史事件
   //_result:
 
 
-## 消息签名 @<starting-signing>
+_subsection: 消息签名 @<starting-signing>
 
 私钥除了用于交易签名授权外，还可以做很多事情。它还可以对其他形式的数据进行签名，用于其他验证目的。
 
 例如，对**消息**进行签名可以用来证明一个账户的所有权，网站可以用它来对用户进行登录鉴权。
 
-```  @lang<javascript>
+_code:  @lang<javascript>
 
   // Signer；对消息进行签名不需要 Provider
   signer = new Wallet(id("test"))

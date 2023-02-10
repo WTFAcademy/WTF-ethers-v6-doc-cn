@@ -100,95 +100,88 @@ _code: v6 合约 @lang<script>
   // 这仍然失败，因为没法知道哪个方法是要调用的
   contract.foo(addr)
 
-  // However, the Typed API makes things a bit easier, since it
-  // allows providing typing information to the Contract:
+  // 但是，Typed API 使事情变得更简单，因为它
+  // 允许向合约提供类型化信息：
   contract.foo(Typed.address(addr))
 
-_heading: Other Method Operations
+_heading: 其他方法操作
+
+在 v5 中，合约对象包含一系列备选方法，每个备选都有对应的签名和无歧义的名字，用于执行不常见的操作。
+
+在 v6 中，每个方法直接附有它的不常见操作。
 
 In v5, contracts contained a series of method buckets, which
-then in turn had all signatures and non-ambiguous names
-attached to them to perform less-common operations.
 
-In v6, the methods each have their own less-common operations
-attached directly to them.
+_code: v5 中的其他操作  @lang<script>
 
-_code: other operations in v5  @lang<script>
-
-  // The default action chooses send or call base on method
-  // type (pure, view, constant, non-payable or payable)
+  // 根据方法类型 (pure, view, constant, non-payable or payable) 选择 send 或 call
   contract.foo(addr)
 
-  // This would perform the default action, but return a Result
-  // object, instead of destructing the value
+  // 这将执行默认操作，但返回的是 Result 对象，而不是值
   contract.functions.foo(addr)
 
-  // Forces using call
+  // 强制使用 call
   contract.staticCall.foo(addr)
 
-  // Estimate the gas
+  // 估算 gas
   contract.estimateGas.foo(addr)
 
-  // Populate a transaction
+  // 创建一个未签名的交易对象
   contract.populateTransaction.foo(addr)
 
-_code: other operations in v6  @lang<script>
+_code: v6 中的其他操作  @lang<script>
 
-  // Still behaves the same
+  // 与 v5 相同
   contract.foo(addr)
 
-  // Perform a call, returning a Result object directly
+  // 直接执行 call，返回 Result 对象
   contract.foo.staticCallResult(addr)
 
-  // Forces using call (even for payable and non-payable)
+  // 强制使用 call（不论是 payable 或 non-payable)
   contract.foo.staticCall(addr)
 
-  // Forces sending a transaction (even for pure and view)
+  // 强制使用 send (即使是 pure 或 view)
   contract.foo.send(addr)
 
-  // Estimate the gas
+  // 估算 gas
   contract.foo.estimateGas(addr)
 
-  // Populate a transaction
+  // 创建一个未签名的交易对象
   contract.foo.populateTransaction(addr)
 
 
-_subsection: Importing  @<migrate-importing>
+_subsection: 引入  @<migrate-importing>
 
-In v5, the project was maintained as a large set of sub-packages
-managed as a monorepo.
+在 v5 中，ethers 项目被作为一大组子包的集合进行维护。
 
-In v6 all imports are available in the root package, and for those
-who wish to have finer-grained control, the ``pkg.exports`` makes
-certain folders avilable directly.
+在 v6 中，所有的导入都可以在根包中获得，对于那些希望更细粒度的控制的人，``pkg.exports`` 使得子文件直接可用。
 
-_code: importing in v5  @lang<script>
+_code: v5 中的引用  @lang<script>
 
-  // Many things (but not all) we available on the root package
+  // 很多包都可以从根包中获得
   import { ethers } from "ethers"
 
-  // But some packages were grouped behind an additional property
+  // 但有一些包被包含在其他的包中
   import { providers } from "ethers"
   const { InfuraProvider } = providers
 
-  // For granular control, importing from the sub-package
-  // was necessary
+  // 要细粒度控制，你需要从子包中引入
   import { InfuraProvider } from "@ethersproject/providers"
 
-_code: importing in v6  @lang<script>
+_code: v6 中的引用 @lang<script>
 
-  // Everything is available on the root package
+  // 所有子包都直接可以从根包中引入
   import { ethers } from "ethers"
   import { InfuraProvider } from "ethers"
 
-  // The pkg.exports provides granular access
+  // pkg.exports 提供细粒度控制
   import { InfuraProvider } from "ethers/providers"
 
 
-_subsection: Odds and Ends @<migrate-other>
+_subsection: 其余变化 @<migrate-other>
 
 
-_code: default AbiCoder  @lang<script>
+_code: 默认 AbiCoder  @lang<script>
   // In v5, it is a property of AbiCoder
   coder = AbiCoder.defaultAbiCoder
 
