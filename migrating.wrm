@@ -1,70 +1,63 @@
-# Migrating from v5 @<migrating> @priority<-10>
+_section: 从 v5 版本迁移 @<migrating> @priority<-10>
 
-This guide aims to capture some of the high-level differences
-between v5 and v6 to help those migrating an existing app and
-those already familiar with v5 that just need a quick primer.
+这份指南旨在捕捉 v5 和 v6 版本之间的一些高阶差异，帮助那些要迁移现有应用程序或已熟悉 v5 的人快速了解新版本。
 
-The biggest differnce in v6 is the use of modern ES6 features,
-so a lot of changes are largely internal.
+v6 最大的不同之处在于使用现代 ES6 功能，因此很多变化在使用时是感受不到的。
 
 - [BigNumbers](migrate-bigint)
 - [Contracts](migrate-contracts)
 - [Importing](migrate-importing)
-- [Odds and Ends](migrate-other)
+- [其余变化](migrate-other)
 
+_subsection: 大整数 Big Numbers  @<migrate-bigint>
 
-## Big Numbers  @<migrate-bigint>
+v6最大的改变之一是 //BigNumber// 类已被现代 JavaScript 环境中内置的 ES2020 BigInt 取代。
 
-One of the biggest changes in v6 is that the //BigNumber// class has
-been replaced with the built-in ES2020 BigInt offered by modern
-JavaScript environments.
+有大量的[在线文档](link-js-bigint)可以帮助您开始学习JavaScript ES2020 BigInt。请记住，就像//BigNumber//一样，ES2020 BigInt 仅能够处理整数。
 
-There is plenty of [online documentation](link-js-bigint) to get
-you started with JavaScript ES2020 BigInt. Keep in mind, just like
-//BigNumber//, a ES2020 BigInt can **only** operate on integers.
+[[FixedNumber]]类仍然存在，用于进行定点数学运算。
 
-The [[FixedNumber]] class still exists for performing fixed-point
-maths.
+_code: 创建大整数  @lang<script>
 
-
-``` creating large numbers  @lang<script>
-
-  // Using BigNumber in v5
+  // 在 v5 中使用 BigNumber 
   value = BigNumber.from("1000")
 
-  // Using BigInt in v6 (ysing literal notation).
-  // Notice the suffix n
+  // 在 v6 中使用 BigInt（使用文字表示法）。
+  // 注意后缀 n
   value = 1000n
 
-  // Using the BigInt function for strings
+  // 对字符串使用 BigInt 函数
   value = BigInt("1000")
 
+_code: 大整数运算  @lang<script>
 
-``` simple maths on large numbers  @lang<script>
-
-  // Adding two values in v5
+  // 在 v5 中添加两个值
   sum = value1.add(value2)
 
-  // Using BigInt in v6; keep in mind, both values
-  // must be a BigInt
+  // 在 v6 中使用 BigInt；请记住，两个值
+  // 都必须是 BigInt 
   sum = value1 + value2
 
+_code: 大整数比较  @lang<script>
 
-``` simple comparison on large numbers  @lang<script>
-
-  // Checking equality in v5
+  // 在 v5 中检查是否相等
   isEqual = value1.eq(value2)
 
-  // Using BigInt in v6
+  // 在 v6 中使用 BigInt 
   isEqaul = (value1 == value2)
 
 
-## Contracts @<migrate-contracts>
 
-The [[Contract]] is an ES6 Proxy, which means it can resolve
-method names at run-time.
+_subsection: 合约 Contracts @<migrate-contracts>
 
-_heading: Ambiguous Methods
+[[Contract]] 是一个 ES6 Proxy，这意味着它可以在运行时解析方法名称。
+
+_heading: 有歧义的方法
+
+在 v5 中，在有歧义的方法的情况下，有必要通过规范规范化签名查找方法。在 v6 中，不需要对签名进行规范化，Typed API 提供了一种更简洁的方式来访问所需的方法。
+
+在 v5 中，重复定义还会将警告注入控制台，因为无法在运行时检测到它们。
+
 
 In v5, in the case of an ambiguous method, it was necessary to
 look up a method by its canonical normalized signature. In v6
@@ -74,38 +67,37 @@ provides a cleaner way to access the desired method.
 In v5, duplicate definitions also injected warnings into the
 console, since there was no way to detect them at run-time.
 
-``` contracts in v5 @lang<script>
+_code: v5 合约 @lang<script>
   abi = [
     "function foo(address bar)",
     "function foo(uint160 bar)",
   ]
   contract = new Contract(address, abi, provider)
 
-  // In v5 it was necessary to specify the fully-qualified normalized
-  // signature to access the desired method. For example:
+  // 在 v5 中，必须指定完全限定的规范化
+  // 签名才能访问所需的方法。例如：
   contract["foo(address)"](addr)
 
-  // These would fail, since there signature is not normalized:
+  // 这些会失败，因为签名没有规范化：
   contract["foo(address )"](addr)
   contract["foo(address addr)"](addr)
 
-  // This would fail, since the method is ambiguous:
+  // 这会失败，因为方法不明确：
   contract.foo(addr)
 
-``` contracts in v6  @lang<script>
+_code: v6 合约 @lang<script>
   abi = [
     "function foo(address bar)",
     "function foo(uint160 bar)",
   ]
   contract = new Contract(address, abi, provider)
 
-  // Any of these work fine:
+  // 这些都可以正常工作：
   contract["foo(address)"](addr)
   contract["foo(address )"](addr)
   contract["foo(address addr)"](addr)
 
-  // This still fails, since there is no way to know which
-  // method was intended
+  // 这仍然失败，因为没法知道哪个方法是要调用的
   contract.foo(addr)
 
   // However, the Typed API makes things a bit easier, since it
@@ -121,7 +113,7 @@ attached to them to perform less-common operations.
 In v6, the methods each have their own less-common operations
 attached directly to them.
 
-``` other operations in v5  @lang<script>
+_code: other operations in v5  @lang<script>
 
   // The default action chooses send or call base on method
   // type (pure, view, constant, non-payable or payable)
@@ -140,7 +132,7 @@ attached directly to them.
   // Populate a transaction
   contract.populateTransaction.foo(addr)
 
-``` other operations in v6  @lang<script>
+_code: other operations in v6  @lang<script>
 
   // Still behaves the same
   contract.foo(addr)
@@ -161,7 +153,7 @@ attached directly to them.
   contract.foo.populateTransaction(addr)
 
 
-## Importing  @<migrate-importing>
+_subsection: Importing  @<migrate-importing>
 
 In v5, the project was maintained as a large set of sub-packages
 managed as a monorepo.
@@ -170,7 +162,7 @@ In v6 all imports are available in the root package, and for those
 who wish to have finer-grained control, the ``pkg.exports`` makes
 certain folders avilable directly.
 
-``` importing in v5  @lang<script>
+_code: importing in v5  @lang<script>
 
   // Many things (but not all) we available on the root package
   import { ethers } from "ethers"
@@ -183,7 +175,7 @@ certain folders avilable directly.
   // was necessary
   import { InfuraProvider } from "@ethersproject/providers"
 
-``` importing in v6  @lang<script>
+_code: importing in v6  @lang<script>
 
   // Everything is available on the root package
   import { ethers } from "ethers"
@@ -193,10 +185,10 @@ certain folders avilable directly.
   import { InfuraProvider } from "ethers/providers"
 
 
-## Odds and Ends @<migrate-other>
+_subsection: Odds and Ends @<migrate-other>
 
 
-``` default AbiCoder  @lang<script>
+_code: default AbiCoder  @lang<script>
   // In v5, it is a property of AbiCoder
   coder = AbiCoder.defaultAbiCoder
 
@@ -205,4 +197,3 @@ certain folders avilable directly.
   // AbiCoder is created and on subsequent calls that initial
   // instance is returned.
   coder = AbiCoder.defaultAbiCoder()
-
