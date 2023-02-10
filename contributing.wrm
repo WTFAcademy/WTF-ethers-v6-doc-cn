@@ -1,4 +1,4 @@
-# 贡献和处理 @<关于-贡献> @priority<-90>
+_section: 贡献和处理 @<about-contrib> @priority<-90>
 
 欢迎提交 PR ，但请注意以下事项：
 
@@ -13,13 +13,11 @@
 //强烈建议//你在开始 PR **之前**先开启一个[[link-discussion]]
 
 
-## 文档  @<关于-贡献-文档>
+_subsection: 文档  @<about-contrib-docs>
 
 文档是一个始终可以从额外的视角，额外的知识和额外的示例中受益的地方
 
-对文档的贡献是受欢迎的
-
-在对文档进行更改时，请确保所有更改**仅限**于
+对文档的贡献是受欢迎的，但在对文档进行更改时，请确保所有更改**仅限**于
 
 - 更新``/docs.wrm/*\*.wrm``
 - 添加链接: ``/docs.wrm/links/*.txt``
@@ -31,8 +29,33 @@
 
 所有更改都应该使用 Flatworm Markdown Dialect
 
+_heading: 构建文档
 
-## 修改漏洞  @<关于-贡献-漏洞>
+目前，文档使用Flatworm文档系统的实验版本v2构建，这是一个最初专门用于维护Ethers文档的系统。
+
+新的 ``tsdocs`` 分支具有从TypeScript源文件解析 ``jsdocs`` 以创建API参考的能力
+
+_code: 用 v2 Flatworm 构建 @lang<shell>
+
+  # 克隆 repo
+  /home/ricmoo> git clone https://github.com/ricmoo/flatworm.git
+  /home/ricmoo> cd flatworm
+
+  # 切换 tsdocs 分支
+  /home/ricmoo/flatworm> git checkout tsdocs
+  
+  # 安装必要的依赖
+  /home/ricmoo/flatworm> npm install
+  
+  # 准备构建文档; 输出到文件夹 ./output/
+  /home/ricmoo/flatworm> node lib/test-api-index PATH_TO_WRM_ROOT
+
+最终v2分支的代码将被清理，并且将更容易包含在Ethers的 ``devDependency`` 中
+
+与此同时，预计 ``tsdocs`` 分支将频繁发生新更改，因此为了稳定性，您可能希望切换到特定的哈希。
+
+
+_subsection: 修改漏洞  @<about-contrib-bugs>
 
 一般来说，您在 PR 中**唯一**应该包含的文件是：
 
@@ -40,10 +63,10 @@
 
 不要包含带有更新``tarballHash``或``version``的``package.json``，也不要在 PR 中包含任何生成的文件。
 
-漏洞修复**不能**修改任何需要一个次版本升级的内容（详见[[关于-贡献-功能]]），例如更改方法签名或更改导出
+漏洞修复**不能**修改任何需要一个次版本升级的内容（详见[[about-contrib-feature]]），例如更改方法签名或更改导出
 
 
-## 增加功能  @<关于-贡献-功能>
+_subsection: 增加功能  @<about-contrib-feature>
 
 贡献新功能通常需要对Ethers及其组件内部交互更深入的理解，并且通常需要一个包含了所有内容的次版本升级
 
@@ -57,15 +80,15 @@
 这种类型的更改应该在经过认真考虑和讨论之后才进行
 
 
-## 搭建  @<搭建>
+_subsection: 构建  @<building>
 
-``` @lang<shell>
+_code: @lang<shell>
   /home/ricmoo> git clone @TODO
   /home/ricmoo> cd ethers
   /home/ricmoo/ethers> npm install
   /home/ricmoo/ethers> npm run auto-build
 
+_null:
 
 
-
-## 预览文档
+_subsection: 预览文档
