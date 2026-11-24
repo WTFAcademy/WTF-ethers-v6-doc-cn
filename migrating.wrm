@@ -44,7 +44,7 @@ _code: 大整数比较  @lang<script>
   isEqual = value1.eq(value2)
 
   // 在 v6 中使用 BigInt 
-  isEqaul = (value1 == value2)
+  isEqual = (value1 === value2)
 
 
 
@@ -121,7 +121,7 @@ _code: v5 中的其他操作  @lang<script>
   contract.functions.foo(addr)
 
   // 强制使用 call
-  contract.staticCall.foo(addr)
+  contract.callStatic.foo(addr)
 
   // 估算 gas
   contract.estimateGas.foo(addr)
@@ -182,8 +182,8 @@ _subsection: 其余变化 @<migrate-other>
 
 
 _code: 默认 AbiCoder  @lang<script>
-  // In v5, it is a property of AbiCoder
-  coder = AbiCoder.defaultAbiCoder
+  // In v5, the default instance is exposed under ethers.utils
+  coder = ethers.utils.defaultAbiCoder
 
   // In v6, it is a static function on AbiCoder, which uses
   // a singleton pattern; the first time it is called, the
