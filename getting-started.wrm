@@ -220,9 +220,9 @@ _heading: 应用程序二进制接口 (ABI)
 
 _code: 简化版 ERC-20 ABI @lang<script>
   abi = [
-    "function decimals() returns (string)",
-    "function symbol() returns (string)",
-    "function balanceOf(address addr) returns (uint)"
+    "function decimals() view returns (uint8)",
+    "function symbol() view returns (string)",
+    "function balanceOf(address addr) view returns (uint256)"
   ]
 
   // 创建一个合约
