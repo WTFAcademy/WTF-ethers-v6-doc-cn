@@ -9,7 +9,7 @@ _heading: 安装 Ethers
 
 _code: 通过 NPM 安装 @lang<shell>
   # 安装 ethers
-  /home/ricmoo/test-ethers> npm install ethers@beta-exports
+  /home/ricmoo/test-ethers> npm install ethers@6.17.0
 
 
 
@@ -29,7 +29,7 @@ _code: 在 Node.js 中导入 @lang<script>
 
 _code: 从浏览器中导入 ESM  @lang<script>
   <script type="module">
-    import { ethers } from "https://cdnjs.cloudflare.com/ajax/libs/ethers/5.7.2/ethers.min.js";
+    import { ethers } from "https://cdn.jsdelivr.net/npm/ethers@6.17.0/dist/ethers.min.js";
     // 在这里继续写代码...
   </script>
 

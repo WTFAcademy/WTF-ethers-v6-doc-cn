@@ -1,10 +1,10 @@
-_section: 文档（测试版） @priority<100>
+_section: 文档 @priority<100>
 
-**注意**：本文档适用于**测试分支**（即v6-beta-exports），该分支仍在进行细微修改。
+入门示例使用 ethers.js 6.17.0。完整 API 变更可查阅 [ethers v6 官方文档](https://docs.ethers.org/v6/)。
 
 试试看：
 _code:
-/home/ricmoo> npm install ethers@beta-exports
+/home/ricmoo> npm install ethers@6.17.0
 
 请报告任何v6问题，可以[联系文档官方github](https://github.com/ethers-io/ethers.js/issues/new/choose)进行处理。
 如果您正在查看v5文档，请在此处查看[v5文档](https://docs.ethers.org/v5/)。
@@ -17,6 +17,6 @@ ethers.js库旨在成为一个完整而紧凑的库，服务于与以太坊区�
 
 _subsection: 关于这份文档
 
-本文为[官方文档v6版本](https://docs.ethers.org/v6-beta/)的中文翻译版，原文档仍在持续建设中，并且每天都在扩展。
-新接触Ethers的开发人员应该确保通读[入门](https://docs.ethers.org/v6-beta/getting-started/)部分。
-[应用程序编程接口](https://docs.ethers.org/v6-beta/api/)可用于深入了解更多细节。
+本仓库的中文译文基于 v6 早期文档。入门安装与导入示例已更新到 6.17.0。
+新接触Ethers的开发人员应该确保通读[入门](https://docs.ethers.org/v6/getting-started/)部分。
+[应用程序编程接口](https://docs.ethers.org/v6/api/)可用于深入了解更多细节。

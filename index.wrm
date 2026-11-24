@@ -1,13 +1,13 @@
-_section: 文档 (BETA) @<about-home> @nav<文档>
+_section: 文档 @<about-home> @nav<文档>
 
 由 [WTF Academy](https://wtf.academy) 翻译。
 
-**注意：**这份文档是针对 **beta 分支** (即 ``v6-beta-exports``) 的，它仍在进行小范围更改。
+入门示例使用 ethers.js 6.17.0，完整 API 见 [ethers v6 官方文档](https://docs.ethers.org/v6/)。
 
 你可以通过 `npm` 安装它：
 
 _code:
-/home/ricmoo> npm install ethers@beta-exports
+/home/ricmoo> npm install ethers@6.17.0
 
 _null:
 
